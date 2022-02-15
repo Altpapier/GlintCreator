@@ -19,7 +19,7 @@
 
 2. Run `node .` to start the program. Wait a bit and the image should come out in the `images/original` folder as well as in the `images/compressed` folder for a compressed version of the gif.
 
-## Problems
+## Problem
 
 The enchantment glint this is using is from https://minecraft.fandom.com/wiki/User:MrJam003/Animated_Sprites_Render. That glint only includes a version with black background. I removed the black background from all the provided images but the glint does not look 100% like the original in minecraft.
 **If you have a transparent version of the enchantment glint please make a PR!** The original enchantment glint can be found in `glint/ORIGINAL`
