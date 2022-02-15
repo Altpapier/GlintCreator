@@ -1,0 +1,22 @@
+{
+  "name": "glintcreator",
+  "version": "1.0.0",
+  "description": "Lets you put the Minecraft enchantment glint onto an image",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Altpapier",
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^2.9.0",
+    "color-convert": "^2.0.1",
+    "gif-encoder-2": "^1.0.5",
+    "gifsicle": "^5.2.1",
+    "jimp": "^0.16.1",
+    "progress": "^2.0.3"
+  },
+  "devDependencies": {
+    "compress-images": "^2.0.4"
+  }
+}
