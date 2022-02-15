@@ -128,6 +128,6 @@ function compressImages() {
 (async () => {
     await generateGIFItem(config);
 
-    // Only compress images if a image with the same name doesn't already exist int he images/compressed folder
+    // Only compress images if a image with the same name doesn't already exist in the images/compressed folder
     compressImages();
 })();
