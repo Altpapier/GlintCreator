@@ -31,7 +31,7 @@ async function generateGIFItem({ image, name, size, sequence, output, compressed
     if (!name) throw new Error('Name is required.');
 
     if (!sequence || sequence === 'short') sequence = __dirname + '/glint/SHORT_GLINT';
-    else if (sequence === 'long') sequence = _dirname + '/glint/FULL_GLINT';
+    else if (sequence === 'long') sequence = __dirname + '/glint/FULL_GLINT';
 
     const encoder = new GIFEncoder(size, size, 'octree', true);
 
