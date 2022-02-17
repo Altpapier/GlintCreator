@@ -53,10 +53,12 @@ async function generateGIFItem({ url, name, size, sequence }) {
     for (const file of files) {
         const canvas = createCanvas(size, size);
         const ctx = canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'screen';
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(image, 0, 0, size, size);
         const buffer = canvas.toBuffer();
 
-        const TRANSPARENT = [0, 0, 0, 255];
+        const TRANSPARENT = [0, 0, 0, 0];
         const TRANSPARENT_PIXELS = [];
 
         const jimpObject = await Jimp.read(buffer);
@@ -77,7 +79,7 @@ async function generateGIFItem({ url, name, size, sequence }) {
             jimpObject2.bitmap.data[PIXEL] = TRANSPARENT[0];
             jimpObject2.bitmap.data[PIXEL + 1] = TRANSPARENT[1];
             jimpObject2.bitmap.data[PIXEL + 2] = TRANSPARENT[2];
-            jimpObject2.bitmap.data[PIXEL + 3] = 0;
+            jimpObject2.bitmap.data[PIXEL + 3] = TRANSPARENT[3];
         }
         const jimpBuffer = await jimpObject2.getBufferAsync('image/png');
 
@@ -110,7 +112,7 @@ function compressImages() {
         { jpg: { engine: false, command: false } },
         { png: { engine: false, command: false } },
         { svg: { engine: false, command: false } },
-        { gif: { engine: 'gifsicle', command: ['-O3', '--colors', '256'] } },
+        { gif: { engine: 'gifsicle', command: ['-O3', '--lossy=10', '--colors', '512'] } }, //Edit the compression level here
         function (error, completed, statistic) {
             /* optional callback */
         }
