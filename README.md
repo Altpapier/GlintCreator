@@ -1,4 +1,4 @@
-# GlintCreator
+# GlintCreator (minecraft-glint-generator)
 
 ### Lets you put the Minecraft enchantment glint onto an image
 
@@ -26,9 +26,9 @@
 ## NPM Package Example
 
 ```
-const glintCreator = require('glintcreator');
+const glintGenerator = require('minecraft-glint-generator');
 
-glintCreator({
+glintGenerator({
 	image: './example.png',
 	name: 'example',
 	size: 160,
