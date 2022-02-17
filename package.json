@@ -14,9 +14,7 @@
     "gif-encoder-2": "^1.0.5",
     "gifsicle": "^5.2.1",
     "jimp": "^0.16.1",
-    "progress": "^2.0.3"
-  },
-  "devDependencies": {
+    "progress": "^2.0.3",
     "compress-images": "^2.0.4"
   }
 }
