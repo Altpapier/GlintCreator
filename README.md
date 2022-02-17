@@ -4,11 +4,11 @@
 
 ## Install
 
-npm install
+`npm install` (if not using the NPM module)
 
 ## Start
 
-1. Go to the `config.json` file and edit it to your liking. If you are using the NPM package pass through an object with these parameters to generate the gif.
+1. Go to the `config.json` file and edit it to your liking. If you are using the `NPM package` pass through an object with these parameters to generate the gif.
 
 | Paramter          | Description                                                                                                                                                                                             | Type      | Required |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
@@ -21,7 +21,7 @@ npm install
 | show_progress     | If to show the progress on generating the gif in the console or not                                                                                                                                     | `Boolean` | `false`  |
 
 2. Run `node .` to start the program. Wait a bit and the image should come out in the `images/original` folder as well as in the `images/compressed` folder for a compressed version of the gif.
-   If you are using the NPM package, call the function to start generating the gif. At the end, the function will not return any data.
+   If you are using the `NPM package`, call the function to start generating the gif. At the end, the function will return a buffer.
 
 ## NPM Package Example
 
