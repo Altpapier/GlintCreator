@@ -1,6 +1,6 @@
 {
   "name": "glintcreator",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Lets you put the Minecraft enchantment glint onto an image",
   "main": "index.js",
   "scripts": {

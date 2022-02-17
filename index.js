@@ -30,8 +30,8 @@ async function generateGIFItem({ image, name, size, sequence, output, compressed
     if (!image) throw new Error('Image is required.');
     if (!name) throw new Error('Name is required.');
 
-    if (!sequence || sequence === 'short') sequence = 'glint/SHORT_GLINT';
-    else if (sequence === 'long') sequence = 'glint/FULL_GLINT';
+    if (!sequence || sequence === 'short') sequence = __dirname + '/glint/SHORT_GLINT';
+    else if (sequence === 'long') sequence = _dirname + '/glint/FULL_GLINT';
 
     const encoder = new GIFEncoder(size, size, 'octree', true);
 
@@ -42,7 +42,7 @@ async function generateGIFItem({ image, name, size, sequence, output, compressed
     encoder.setTransparent(0xff000000);
     encoder.start();
 
-    const files = fs.readdirSync(`./${sequence}/`);
+    const files = fs.readdirSync(`${sequence}/`);
     const loadedImage = await loadImage(image);
 
     let bar;
@@ -75,7 +75,7 @@ async function generateGIFItem({ image, name, size, sequence, output, compressed
             }
         });
 
-        const img = await loadImage(`./${sequence}/${file}`);
+        const img = await loadImage(`${sequence}/${file}`);
         ctx.drawImage(img, 0, 0, size, size);
         const buffer2 = canvas.toBuffer();
         const jimpObject2 = await Jimp.read(buffer2);
