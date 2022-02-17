@@ -25,8 +25,10 @@ function convertColor(from, to, color) {
     return [...colorConvert[from][to](color), alpha];
 }
 
-async function generateGIFItem({ url, name, size, sequence }) {
+async function generateGIFItem({ image, name, size, sequence, output, compressed_output, show_progress }) {
     if (!size) size = 160;
+    if (!image) throw new Error('Image is required.');
+    if (!name) throw new Error('Name is required.');
 
     if (!sequence || sequence === 'short') sequence = 'glint/SHORT_GLINT';
     else if (sequence === 'long') sequence = 'glint/FULL_GLINT';
@@ -41,21 +43,24 @@ async function generateGIFItem({ url, name, size, sequence }) {
     encoder.start();
 
     const files = fs.readdirSync(`./${sequence}/`);
-    const image = await loadImage(url);
+    const loadedImage = await loadImage(image);
 
-    const bar = new progress(':bar :percent :eta', {
-        total: files.length,
-        width: 30,
-        incomplete: '▒',
-        complete: '█',
-    });
+    let bar;
+    if (show_progress) {
+        bar = new progress(':bar :percent :eta', {
+            total: files.length,
+            width: 30,
+            incomplete: '▒',
+            complete: '█',
+        });
+    }
 
     for (const file of files) {
         const canvas = createCanvas(size, size);
         const ctx = canvas.getContext('2d');
         ctx.globalCompositeOperation = 'screen';
         ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(image, 0, 0, size, size);
+        ctx.drawImage(loadedImage, 0, 0, size, size);
         const buffer = canvas.toBuffer();
 
         const TRANSPARENT = [0, 0, 0, 0];
@@ -89,47 +94,50 @@ async function generateGIFItem({ url, name, size, sequence }) {
         secondCtx.drawImage(out, 0, 0, size, size);
 
         encoder.addFrame(secondCtx);
-        bar.tick();
+        if (show_progress) bar.tick();
     }
-
     encoder.finish();
-    bar.tick();
 
     const encodedBuffer = encoder.out.getData();
-    fs.writeFileSync(`images/original/${name}.gif`, encodedBuffer);
-}
+    if (output) fs.writeFileSync(`${output}/${name}.gif`, encodedBuffer);
 
-function compressImages() {
-    compress_images(
-        'images/original/*.gif',
-        'images/compressed/',
-        {
-            compress_forge: true,
-            statistic: true,
-            autoupdate: true,
-        },
-        false,
-        { jpg: { engine: false, command: false } },
-        { png: { engine: false, command: false } },
-        { svg: { engine: false, command: false } },
-        { gif: { engine: 'gifsicle', command: ['-O3', '--lossy=10', '--colors', '512'] } }, //Edit the compression level here
-        function (error, completed, statistic) {
-            /* optional callback */
-        }
-    );
+    if (compressed_output) {
+        compress_images(
+            output + '/*.gif',
+            compressed_output + '/',
+            {
+                compress_forge: true,
+                statistic: true,
+                autoupdate: true,
+            },
+            false,
+            { jpg: { engine: false, command: false } },
+            { png: { engine: false, command: false } },
+            { svg: { engine: false, command: false } },
+            { gif: { engine: 'gifsicle', command: ['-O3', '--lossy=10', '--colors', '512'] } }, //Edit the compression level here
+            function (error, completed, statistic) {
+                /* optional callback */
+            }
+        );
+    }
+    return encodedBuffer;
 }
 
 /*
     generateGIFItem function:
-    url: The url to an image or a path to an image          String
+    image: The url to an image or a path to an image        String
     name: The name of the gif file                          String
     size: The size of the gif                               Integer        
     sequence: Whether to use the short or long sequence     String ('short' or 'long')
+    output: The path to the output directory                String
+    compressed_output: The path to the compressed output    String
+    show_progress: Whether to show the progress bar         Boolean
 */
 
-(async () => {
-    await generateGIFItem(config);
+if (require.main === module) {
+    (async () => {
+        await generateGIFItem(config);
+    })();
+}
 
-    // Only compress images if a image with the same name doesn't already exist in the images/compressed folder
-    compressImages();
-})();
+module.exports = generateGIFItem;

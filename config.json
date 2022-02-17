@@ -1,6 +1,9 @@
 {
-    "url": "./example.png",
+    "image": "./example.png",
     "name": "example",
     "size": 160,
-    "sequence": "long"
+    "sequence": "long",
+    "output": "./images/original",
+    "compressed_output": "./images/compressed",
+    "show_progress": true
 }
